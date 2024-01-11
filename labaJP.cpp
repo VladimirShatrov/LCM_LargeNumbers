@@ -67,25 +67,10 @@ int main()
     while (first_num.size() < second_num.size())
         first_num = "0" + first_num;
 
+    string res = remove_LeadingZeros(divide_longNumbers(multiplay_longNumbers(first_num, second_num), greatest_common_divisor(first_num, second_num))); // nok = (a * b) / nod(a,b)
 
-    int* array_a = new int[first_num.size()];
-    int* array_b = new int[second_num.size()];
-    for (int i = 0; i < first_num.size(); i++)
-    {
-        array_a[i] = 0;
-        array_b[i] = 0;
-    }
-    from_string_to_array(first_num, array_a); // запись строк в массивы
-    from_string_to_array(second_num, array_b);
-    cout << endl;
-    int* least_common_multiple = greatest_common_divisor(array_a, array_b, first_num.size());
-    for (int i = first_num.size() - 1; i >= 0; i--)
-    {
-        cout << least_common_multiple[i];
-    }
-
-    delete[]least_common_multiple;
-    delete[]array_a;
-    delete[]array_b;
+    cout << endl << "least common multiple of those two numbers: ";
+    for (int i = 0; i < res.size(); i++)
+        cout << res[i];
     return 0;
 }

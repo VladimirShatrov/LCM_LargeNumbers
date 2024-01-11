@@ -3,18 +3,20 @@
 using namespace std;
 
 
-void from_string_to_array(string a, int* array);
+int* from_string_to_array(string a);
 
-int* multiplay_longNumbers(int* a, int* b, int len);
+string multiplay_longNumbers(string a, string b);
 
-int* divide_longNumbers(int* a, int* b, int len);
+string divide_longNumbers(string a, string b);
 
-int* sum_longNumbers(int* a, int* b, int len);
+string sum_longNumbers(string a, string b);
 
-int* subtraction_longNumbers(int* a, int* b, int len);
+string subtraction_longNumbers(string a, string b);
 
-bool a_larger_or_equal_b(int* a, int* b, int len);
+bool a_larger_or_equal_b(string a, string b);
 
-bool a_equal_b(int* a, int* b, int len);
+bool a_equal_b(string a, string b);
 
-int* greatest_common_divisor(int* a, int* b, int len);
+string greatest_common_divisor(string a, string b);
+
+string remove_LeadingZeros(string a);
