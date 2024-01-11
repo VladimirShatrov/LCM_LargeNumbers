@@ -89,4 +89,3 @@ int main()
     delete[]array_b;
     return 0;
 }
-
