@@ -131,3 +131,4 @@ int* greatest_common_divisor(int* a, int* b, int len)
 		return greatest_common_divisor(subtraction_longNumbers(a, b, len), b, len);
 	return greatest_common_divisor(subtraction_longNumbers(b, a, len), a, len);
 }
+
