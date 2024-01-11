@@ -1,17 +1,25 @@
 #include <iostream>
-
+#include <vector>
 
 using namespace std;
 
 
-void from_string_to_array(string a, int* array);
+void from_string_to_array(string a, long long int* array);
 
-//int* multiplay_longNumbers(int* a, int* b, int c, int d);
+long long int* multiplay_longNumbers(long long int* a, long long int* b, int len);
 
-int* sum_longNumbers(int* a, int* b, int len_a, int len_b);
+long long int* divide_longNumbers(long long int* a, long long int* b, int len);
 
-//int* subtraction_longNumbers(int* a, int* b);
+long long int* sum_longNumbers(long long int* a, long long int* b, int len);
 
-//int* NOD(int* n, int* m);
+long long int* subtraction_longNumbers(long long int* a, long long int* b, int len);
 
-//string NOK(int* n, int* m, int* nod);
+bool a_larger_b(long long int* a, long long int* b, int len);
+
+bool a_larger_or_equal_b_oneElement_oneNumber(int* a, int* b);
+
+long long int* mod(long long int* a, long long int* b, int len);
+
+long long int* greatest_common_divisor(long long int* n, long long int* m);
+
+string NOK(long long int* n, long long int* m, long long int* nod);
