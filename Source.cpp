@@ -4,7 +4,7 @@
 
 using namespace std;
 
-
+//в функциях int len = a.size() / 9 + 1 т.к. строки провдятся к равной длине (поэтому не важно b.size() или a.size()) и записываются в массивы по 9 цифр (поэтому делим на 9) если a.size() % 9 != 0 выделяем память на доп. цифры 
 string remove_LeadingZeros(string a)
 {
 	string res;
@@ -18,6 +18,37 @@ string remove_LeadingZeros(string a)
 	for (int i = index; i < a.size(); i++)
 		res += a[i];
 	return res;
+}
+
+
+long long int* from_string_to_array_9(string a)
+{
+	string sub_string;
+	long long int* array = new long long int[a.size() / 9 + 1];
+	for (int i = 0; i < a.size() / 9 + 1; i++)
+		array[i] = 0;
+	int j;
+	int pos = 0;
+	for (int i = a.size() - 10; i >= 0; i -= 9)
+	{
+		sub_string = "";
+		j = 1;
+		while ((j <= 9) and (i + j < a.size()))
+		{
+			sub_string += a[i + j];
+			j++;
+		}
+		array[pos] = atoi(sub_string.c_str());
+		pos++;
+	}
+	if (a.size() % 9 != 0) 
+	{
+		sub_string = "";
+		for (int i = 0; i < a.size() % 9; i++)
+			sub_string += a[i];
+		array[pos] = atoi(sub_string.c_str());
+	}
+	return array;
 }
 
 
@@ -38,29 +69,30 @@ string multiplay_longNumbers(string a, string b)
 		b = "0" + b;
 	while (a.size() < b.size())
 		a = "0" + a;
-	int* array_a = from_string_to_array(a);
-	int* array_b = from_string_to_array(b);
-	int len = a.size();
+	long long int* array_a = from_string_to_array_9(a);
+	long long int* array_b = from_string_to_array_9(b);
+	int len = a.size() / 9 + 1;
 
-	int* array_result = new int[2 * len]; // макс. длина произведения = сумме длинн чисел 
+	long long int* array_result = new long long int[2 * len]; // макс. длина произведения = сумме длинн чисел 
 	for (int i = 0; i < 2 * len; i++)
 		array_result[i] = 0;
 	for (int i = 0; i < len; i++)
 		for (int j = 0; j < len; j++)
 		{
-			array_result[i + j] += (array_a[i] * array_b[j]) % 10;
-			if (array_result[i + j] > 9)
+			array_result[i + j] += (array_a[i] * array_b[j]) % 1000000000;
+			if (array_result[i + j] > 999999999)
 			{
-				array_result[i + j + 1] += array_result[i + j] / 10;
-				array_result[i + j] = array_result[i + j] % 10;
+				array_result[i + j + 1] += array_result[i + j] / 1000000000;
+				array_result[i + j] = array_result[i + j] % 1000000000;
 			}
-			array_result[i + j + 1] += (array_a[i] * array_b[j]) / 10;
+			array_result[i + j + 1] += (array_a[i] * array_b[j]) / 1000000000;
 		}
 
 	string result;
 	for (int i = 2 * len - 1; i >= 0; i--)
 		result += to_string(array_result[i]);
 
+	delete[] array_result;
 	delete[] array_a;
 	delete[] array_b;
 	return result;
@@ -73,18 +105,18 @@ string sum_longNumbers(string a, string b)
 		b = "0" + b;
 	while (a.size() < b.size())
 		a = "0" + a;
-	int* array_a = from_string_to_array(a);
-	int* array_b = from_string_to_array(b);
-	int len = a.size();
+	long long int* array_a = from_string_to_array_9(a);
+	long long int* array_b = from_string_to_array_9(b);
+	int len = a.size() / 9 + 1;
 	
-	int* result = new int[len + 1]; // макс длина суммы = длина макс слагаемого + 1
+	long long int* result = new long long int[len + 1]; // макс длина суммы = длина макс слагаемого + 1
 	for (int i = 0; i < len + 1; i++)
 		result[i] = 0;
 	int ost = 0;
 	for (int i = 0; i < len; i++)
 	{
-		result[i] = (array_a[i] + array_b[i] + ost) % 10;
-		ost = (array_a[i] + array_b[i] + ost) / 10;
+		result[i] = (array_a[i] + array_b[i] + ost) % 1000000000;
+		ost = (array_a[i] + array_b[i] + ost) / 1000000000;
 	}
 
 	string res;
@@ -92,6 +124,7 @@ string sum_longNumbers(string a, string b)
 	for (int i = len; i >= 0; i--)
 		res += to_string(result[i]);
 
+	delete[] result;
 	delete[] array_a;
 	delete[] array_b;
 	return res;
@@ -104,9 +137,9 @@ string subtraction_longNumbers(string a, string b)
 		b = "0" + b;
 	while (a.size() < b.size())
 		a = "0" + a;
-	int* array_a = from_string_to_array(a);
-	int* array_b = from_string_to_array(b);
-	int len = a.size();
+	long long int* array_a = from_string_to_array_9(a);
+	long long int* array_b = from_string_to_array_9(b);
+	int len = a.size() / 9 + 1;
 
 	int is_a_eq_b = 1;
 	for (int i = len - 1; i >= 0; i--)
@@ -121,7 +154,7 @@ string subtraction_longNumbers(string a, string b)
 
 	string res;
 
-	int* result = new int[len];
+	long long int* result = new long long int[len];
 	for (int i = 0; i < len; i++)
 	{
 		result[i] = 0;
@@ -129,6 +162,7 @@ string subtraction_longNumbers(string a, string b)
 
 	if (is_a_eq_b) // если a = b возвращаем 0
 	{
+		delete[] result;
 		delete[] array_a;
 		delete[] array_b;
 		return res = "0";
@@ -139,12 +173,14 @@ string subtraction_longNumbers(string a, string b)
 		result[i] = array_a[i] - array_b[i];
 		if (result[i] < 0)
 		{
-			result[i] += 10;
+			result[i] += 1000000000;
 			array_a[i + 1]--;
 		}
 	}
 	for (int i = len - 1; i >= 0; i--)
 		res += to_string(result[i]);
+
+	delete[] result;
 	delete[] array_a;
 	delete[] array_b;
 	return res;
@@ -157,11 +193,11 @@ bool a_larger_or_equal_b(string a, string b)
 		b = "0" + b;
 	while (a.size() < b.size())
 		a = "0" + a;
-	int* array_a = from_string_to_array(a);
-	int* array_b = from_string_to_array(b);
-	int len = a.size();
+	long long int* array_a = from_string_to_array_9(a);
+	long long int* array_b = from_string_to_array_9(b);
+	int len = a.size() / 9 + 1;
 
-	for (int i = len - 1; i >= 0; i--)
+	for (int i = len - 1; i >= 0; i--) // числа в массивах в обратном порядке => идем с конца и сравниваем элементы
 	{
 		if (array_a[i] > array_b[i])
 		{
@@ -189,9 +225,9 @@ bool a_equal_b(string a, string b)
 		b = "0" + b;
 	while (a.size() < b.size())
 		a = "0" + a;
-	int* array_a = from_string_to_array(a);
-	int* array_b = from_string_to_array(b);
-	int len = a.size();
+	long long int* array_a = from_string_to_array_9(a);
+	long long int* array_b = from_string_to_array_9(b);
+	int len = a.size() / 9 + 1;
 
 	for (int i = len - 1; i >= 0; i--)
 	{
@@ -214,7 +250,7 @@ bool a_equal_b(string a, string b)
 }
 
 
-string divide_longNumbers(string a, string b)// 12345 / 123 => 123 / 123 = 1 
+string divide_longNumbers(string a, string b)
 {
 	while (a.size() > b.size())
 		b = "0" + b;

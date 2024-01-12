@@ -5,6 +5,8 @@ using namespace std;
 
 int* from_string_to_array(string a);
 
+long long int* from_string_to_array_9(string a);
+
 string multiplay_longNumbers(string a, string b);
 
 string divide_longNumbers(string a, string b);

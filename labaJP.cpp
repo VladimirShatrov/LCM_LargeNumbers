@@ -1,5 +1,5 @@
 ﻿#include "Header.h"
-//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
+
 //Языки программирования ИКМ задача - 27 найти НОК двух чисел > 10^11
 int main()
 {
@@ -68,9 +68,9 @@ int main()
         first_num = "0" + first_num;
 
     string res = remove_LeadingZeros(divide_longNumbers(multiplay_longNumbers(first_num, second_num), greatest_common_divisor(first_num, second_num))); // nok = (a * b) / nod(a,b)
-
     cout << endl << "least common multiple of those two numbers: ";
     for (int i = 0; i < res.size(); i++)
         cout << res[i];
     return 0;
 }
+//test (big big) =>   nok (68459716413415464 365484115458150) = 
