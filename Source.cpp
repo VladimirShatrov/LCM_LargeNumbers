@@ -41,7 +41,7 @@ long long int* from_string_to_array_9(string a)
 		array[pos] = atoi(sub_string.c_str());
 		pos++;
 	}
-	if (a.size() % 9 != 0) 
+	if (a.size() % 9 != 0) // если кол-во цифр числа нечетное первые a.size() % 9 цифр не будут записаны в массив в пред. цикле
 	{
 		sub_string = "";
 		for (int i = 0; i < a.size() % 9; i++)
@@ -60,130 +60,6 @@ int* from_string_to_array(string a)
 	for (int i = 0; i < a.size(); i++)
 		array[a.size() - i - 1] = a[i] - '0';
 	return array;
-}
-
-
-string multiplay_longNumbers(string a, string b)
-{
-	while (a.size() > b.size())
-		b = "0" + b;
-	while (a.size() < b.size())
-		a = "0" + a;
-	long long int* array_a = from_string_to_array_9(a);
-	long long int* array_b = from_string_to_array_9(b);
-	int len = a.size() / 9 + 1;
-
-	long long int* array_result = new long long int[2 * len]; // макс. длина произведения = сумме длинн чисел 
-	for (int i = 0; i < 2 * len; i++)
-		array_result[i] = 0;
-	for (int i = 0; i < len; i++)
-		for (int j = 0; j < len; j++)
-		{
-			array_result[i + j] += (array_a[i] * array_b[j]) % 1000000000;
-			if (array_result[i + j] > 999999999)
-			{
-				array_result[i + j + 1] += array_result[i + j] / 1000000000;
-				array_result[i + j] = array_result[i + j] % 1000000000;
-			}
-			array_result[i + j + 1] += (array_a[i] * array_b[j]) / 1000000000;
-		}
-
-	string result;
-	for (int i = 2 * len - 1; i >= 0; i--)
-		result += to_string(array_result[i]);
-
-	delete[] array_result;
-	delete[] array_a;
-	delete[] array_b;
-	return result;
-}
-
-
-string sum_longNumbers(string a, string b)
-{
-	while (a.size() > b.size())
-		b = "0" + b;
-	while (a.size() < b.size())
-		a = "0" + a;
-	long long int* array_a = from_string_to_array_9(a);
-	long long int* array_b = from_string_to_array_9(b);
-	int len = a.size() / 9 + 1;
-	
-	long long int* result = new long long int[len + 1]; // макс длина суммы = длина макс слагаемого + 1
-	for (int i = 0; i < len + 1; i++)
-		result[i] = 0;
-	int ost = 0;
-	for (int i = 0; i < len; i++)
-	{
-		result[i] = (array_a[i] + array_b[i] + ost) % 1000000000;
-		ost = (array_a[i] + array_b[i] + ost) / 1000000000;
-	}
-
-	string res;
-
-	for (int i = len; i >= 0; i--)
-		res += to_string(result[i]);
-
-	delete[] result;
-	delete[] array_a;
-	delete[] array_b;
-	return res;
-}
-
-
-string subtraction_longNumbers(string a, string b)
-{
-	while (a.size() > b.size())
-		b = "0" + b;
-	while (a.size() < b.size())
-		a = "0" + a;
-	long long int* array_a = from_string_to_array_9(a);
-	long long int* array_b = from_string_to_array_9(b);
-	int len = a.size() / 9 + 1;
-
-	int is_a_eq_b = 1;
-	for (int i = len - 1; i >= 0; i--)
-	{
-		if (array_a[i] > array_b[i])
-		{
-			is_a_eq_b = 0;
-			break;
-		}
-
-	}
-
-	string res;
-
-	long long int* result = new long long int[len];
-	for (int i = 0; i < len; i++)
-	{
-		result[i] = 0;
-	}
-
-	if (is_a_eq_b) // если a = b возвращаем 0
-	{
-		delete[] result;
-		delete[] array_a;
-		delete[] array_b;
-		return res = "0";
-	}
-
-	for (int i = 0; i < len; i++)
-	{
-		result[i] = array_a[i] - array_b[i];
-		if (result[i] < 0)
-		{
-			result[i] += 1000000000;
-			array_a[i + 1]--;
-		}
-	}
-	for (int i = len - 1; i >= 0; i--)
-		res += to_string(result[i]);
-
-	delete[] result;
-	delete[] array_a;
-	delete[] array_b;
-	return res;
 }
 
 
@@ -231,13 +107,7 @@ bool a_equal_b(string a, string b)
 
 	for (int i = len - 1; i >= 0; i--)
 	{
-		if (array_a[i] > array_b[i])
-		{
-			delete[] array_a;
-			delete[] array_b;
-			return false;
-		}
-		if (array_a[i] < array_b[i])
+		if (array_a[i] != array_b[i])
 		{
 			delete[] array_a;
 			delete[] array_b;
@@ -250,7 +120,196 @@ bool a_equal_b(string a, string b)
 }
 
 
-string divide_longNumbers(string a, string b)
+string multiply_longNumbers(string a, string b)
+{
+	while (a.size() > b.size())
+		b = "0" + b;
+	while (a.size() < b.size())
+		a = "0" + a;
+	long long int* array_a = from_string_to_array_9(a);
+	long long int* array_b = from_string_to_array_9(b);
+	int len = a.size() / 9 + 1;
+
+	long long int* array_result = new long long int[2 * len]; // макс. длина произведения = сумме длинн чисел 
+	for (int i = 0; i < 2 * len; i++)
+		array_result[i] = 0;
+	for (int i = 0; i < len; i++)
+		for (int j = 0; j < len; j++)
+		{
+			array_result[i + j] += (array_a[i] * array_b[j]) % 1000000000;
+			if (array_result[i + j] >= 1000000000)
+			{
+				array_result[i + j + 1] += array_result[i + j] / 1000000000;
+				array_result[i + j] = array_result[i + j] % 1000000000;
+			}
+			array_result[i + j + 1] += (array_a[i] * array_b[j]) / 1000000000;
+		}
+
+	string result;
+	bool is_it_leading_zero = true;
+	for (int i = 2 * len - 1; i >= 0; i--)
+	{
+		if (is_it_leading_zero and array_result[i] != 0)
+		{
+			is_it_leading_zero = false;
+			result += to_string(array_result[i]);
+		}
+		else
+		{
+			if (!is_it_leading_zero)
+			{
+				if (array_result[i] == 0)
+					result += "000000000";
+				else
+				{
+					if (array_result[i] < 100000000) //если в не первом не нулевом элементе < 9 цифр дописываем нули
+					{
+						string sub_string = to_string(array_result[i]);
+						while (sub_string.size() < 9)
+							sub_string = "0" + sub_string;
+						result += sub_string;
+					}
+					else
+						result += to_string(array_result[i]);
+				}
+			}
+		}
+	}
+
+	delete[] array_result;
+	delete[] array_a;
+	delete[] array_b;
+	return result;
+}
+
+
+string sum_longNumbers(string a, string b)
+{
+	while (a.size() > b.size())
+		b = "0" + b;
+	while (a.size() < b.size())
+		a = "0" + a;
+	long long int* array_a = from_string_to_array_9(a);
+	long long int* array_b = from_string_to_array_9(b);
+	int len = a.size() / 9 + 1;
+	
+	long long int* result = new long long int[len + 1]; // макс длина суммы = длина макс слагаемого + 1
+	for (int i = 0; i < len + 1; i++)
+		result[i] = 0;
+	int ost = 0;
+	for (int i = 0; i < len; i++)
+	{
+		result[i] = (array_a[i] + array_b[i] + ost) % 1000000000;
+		ost = (array_a[i] + array_b[i] + ost) / 1000000000;
+	}
+
+	string res;
+	bool is_it_leading_zero = true;
+	for (int i = len; i >= 0; i--)
+	{
+		if (is_it_leading_zero and result[i] != 0)
+		{
+			is_it_leading_zero = false;
+			res += to_string(result[i]);
+		}
+		else
+		{
+			if (!is_it_leading_zero)
+			{
+				if (result[i] == 0)
+					res += "000000000";
+				else
+				{
+					if (result[i] < 100000000)
+					{
+						string sub_string = to_string(result[i]);
+						while (sub_string.size() < 9)
+							sub_string = "0" + sub_string;
+						res += sub_string;
+					}
+					else
+						res += to_string(result[i]);
+				}
+			}
+		}
+	}
+
+	delete[] result;
+	delete[] array_a;
+	delete[] array_b;
+	return res;
+}
+
+
+string subtraction_longNumbers(string a, string b)
+{
+	if (a_equal_b(a, b)) // если a = b  a - b = 0 
+		return "0";
+
+	while (a.size() > b.size())
+		b = "0" + b;
+	while (a.size() < b.size())
+		a = "0" + a;
+
+	long long int* array_a = from_string_to_array_9(a);
+	long long int* array_b = from_string_to_array_9(b);
+	int len = a.size() / 9 + 1;
+
+	long long int* result = new long long int[len];
+	for (int i = 0; i < len; i++)
+	{
+		result[i] = 0;
+	}
+
+	for (int i = 0; i < len; i++)
+	{
+		result[i] = array_a[i] - array_b[i];
+		if (result[i] < 0)
+		{
+			result[i] += 1000000000;
+			array_a[i + 1]--;
+		}
+	}
+
+	string res;
+	bool is_it_leading_zero = true;
+	for (int i = len - 1; i >= 0; i--)
+	{
+		if (is_it_leading_zero and result[i] != 0)
+		{
+			is_it_leading_zero = false;
+			res += to_string(result[i]);
+		}
+		else
+		{
+			if (!is_it_leading_zero)
+			{
+				if (result[i] == 0)
+					res += "000000000";
+				else
+				{
+					if (result[i] < 100000000)
+					{
+						string sub_string = to_string(result[i]);
+						while (sub_string.size() < 9)
+							sub_string = "0" + sub_string;
+						res += sub_string;
+					}
+					else
+						res += to_string(result[i]);
+				}
+			}
+		}
+	}
+
+	delete[] result;
+	delete[] array_a;
+	delete[] array_b;
+	return res;
+}
+
+
+string divide_longNumbers(string a, string b) 
 {
 	while (a.size() > b.size())
 		b = "0" + b;
@@ -260,14 +319,14 @@ string divide_longNumbers(string a, string b)
 
 	string res = "", substring = "";
 	int i = 0;
-	while (!a_larger_or_equal_b(substring, b))
+	while (!a_larger_or_equal_b(substring, b)) // while (substring < b)
 	{
 		if (i >= len)
 			return res;
 		substring += a[i];
 		i++;
 	}
-	while (a_larger_or_equal_b(a, b)) // пока a >= b
+	while (a_larger_or_equal_b(a, b)) // while (a >= b)
 	{
 		for (int j = i - 1; j >= 0; j--)
 			a[j] = '0';
@@ -294,7 +353,7 @@ string divide_longNumbers(string a, string b)
 
 string mod(string a, string b)
 {
-	string res = subtraction_longNumbers(a, multiplay_longNumbers(divide_longNumbers(a, b), b)); // a % b = a - (a / b) * b
+	string res = subtraction_longNumbers(a, multiply_longNumbers(divide_longNumbers(a, b), b)); // a % b = a - (a / b) * b
 	return res;
 }
 
