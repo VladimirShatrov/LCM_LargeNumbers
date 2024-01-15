@@ -4,6 +4,14 @@
 
 using namespace std;
 
+
+void swap_xdd(string &a, string &b)
+{
+	string t = a;
+	a = b;
+	b = t;
+}
+
 //в функциях int len = a.size() / 9 + 1 т.к. строки провдятся к равной длине (поэтому не важно b.size() или a.size()) и записываются в массивы по 9 цифр (поэтому делим на 9) если a.size() % 9 != 0 выделяем память на доп. цифры 
 string remove_LeadingZeros(string a)
 {
@@ -29,7 +37,7 @@ long long int* from_string_to_array_9(string a)
 		array[i] = 0;
 	int j;
 	int pos = 0;
-	for (int i = a.size() - 10; i >= 0; i -= 9)
+	for (int i = a.size() - 10; i >= -1; i -= 9)
 	{
 		sub_string = "";
 		j = 1;
@@ -52,7 +60,7 @@ long long int* from_string_to_array_9(string a)
 }
 
 
-int* from_string_to_array(string a)
+int* from_string_to_array(string a) // не используется
 {
 	int* array = new int[a.size()];
 	for (int i = 0; i < a.size(); i++)
@@ -126,13 +134,14 @@ string multiply_longNumbers(string a, string b)
 		b = "0" + b;
 	while (a.size() < b.size())
 		a = "0" + a;
-	long long int* array_a = from_string_to_array_9(a);
+ 	long long int* array_a = from_string_to_array_9(a);
 	long long int* array_b = from_string_to_array_9(b);
 	int len = a.size() / 9 + 1;
 
 	long long int* array_result = new long long int[2 * len]; // макс. длина произведения = сумме длинн чисел 
 	for (int i = 0; i < 2 * len; i++)
 		array_result[i] = 0;
+
 	for (int i = 0; i < len; i++)
 		for (int j = 0; j < len; j++)
 		{
@@ -183,7 +192,7 @@ string multiply_longNumbers(string a, string b)
 }
 
 
-string sum_longNumbers(string a, string b)
+string sum_longNumbers(string a, string b)// не используется
 {
 	while (a.size() > b.size())
 		b = "0" + b;
@@ -196,6 +205,7 @@ string sum_longNumbers(string a, string b)
 	long long int* result = new long long int[len + 1]; // макс длина суммы = длина макс слагаемого + 1
 	for (int i = 0; i < len + 1; i++)
 		result[i] = 0;
+
 	int ost = 0;
 	for (int i = 0; i < len; i++)
 	{
@@ -243,9 +253,6 @@ string sum_longNumbers(string a, string b)
 
 string subtraction_longNumbers(string a, string b)
 {
-	if (a_equal_b(a, b)) // если a = b  a - b = 0 
-		return "0";
-
 	while (a.size() > b.size())
 		b = "0" + b;
 	while (a.size() < b.size())
@@ -259,6 +266,14 @@ string subtraction_longNumbers(string a, string b)
 	for (int i = 0; i < len; i++)
 	{
 		result[i] = 0;
+	}
+
+	if (a_equal_b(a, b)) // если a = b  a - b = 0 
+	{
+		delete[] result;
+		delete[] array_a;
+		delete[] array_b;
+		return "0";
 	}
 
 	for (int i = 0; i < len; i++)
@@ -326,7 +341,7 @@ string divide_longNumbers(string a, string b)
 		substring += a[i];
 		i++;
 	}
-	while (a_larger_or_equal_b(a, b)) // while (a >= b)
+	while ((a_larger_or_equal_b(a, b)) or (a_larger_or_equal_b(substring, b)))// while (a >= b) or (sub_string >= b)
 	{
 		for (int j = i - 1; j >= 0; j--)
 			a[j] = '0';
@@ -360,6 +375,9 @@ string mod(string a, string b)
 
 string greatest_common_divisor(string a, string b)
 {
+	if (!a_larger_or_equal_b(a, b))
+		swap(a, b);
+
 	while (a.size() > b.size())
 		b = "0" + b;
 	while (a.size() < b.size())

@@ -85,7 +85,7 @@ int main()
     }
 
     if (!a_larger_or_equal_b(first_num, second_num))
-        swap(first_num, second_num);
+        swap_xdd(first_num, second_num);
 
     string res = remove_LeadingZeros(divide_longNumbers(multiply_longNumbers(first_num, second_num), greatest_common_divisor(first_num, second_num))); // nok = (a * b) / nod(a,b)
     cout << endl << "Least common multiple of those two numbers: ";

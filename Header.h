@@ -8,6 +8,8 @@ int* from_string_to_array(string a);
 
 long long int* from_string_to_array_9(string a);
 
+void swap_xdd(string &a, string &b);
+
 string multiply_longNumbers(string a, string b);
 
 string divide_longNumbers(string a, string b);
